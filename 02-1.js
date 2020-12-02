@@ -9,7 +9,7 @@ let valid = 0;
 lines.forEach(line => {
     let policy = line.match(/(\d+)-(\d+) ([a-z]): (.*)/);
 
-    let regex = new RegExp(`${policy[3]}`,'g');
+    let regex = new RegExp(policy[3],'g');
     let result = policy[4].match(regex);
 
     let num = result == null ? 0 : result.length;
@@ -18,4 +18,4 @@ lines.forEach(line => {
     }
 });
 
-console.log('Num valid: ' + valid);
+console.log('Num valid: ', valid);
