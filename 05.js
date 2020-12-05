@@ -12,50 +12,61 @@ decode('FFFBBBFRRR');
 decode('BBFFBBFRLL');
 
 var max = 0;
+var min = 1000;
+var flight = [];
 lines.forEach(seat => {
-    max = Math.max(max, decode(seat));
+    var id = decode(seat);
+    min = Math.min(min, id);
+    max = Math.max(max, id);
+    flight[id] = true;
 });
+
+// Del 1
 console.log('Max seat: ' + max);
 
+// Del 2
+for(var i=min;i<max;i++) {
+    if(!flight[i]) console.log(i);
+}
+
 function decode(seat) {
+    // Decode row och col är så lika så jag vill slå ihop dom. Orkar inte
     var row = decodeRow(seat);
     var col = decodeCol(seat);
     var id = row * 8 + col;
-    //console.log(row, col, id);
     return id;
 }
+
 function decodeCol(seat) {
-    let upper = 7;
+    let pointer = 7;
     let size = 8;
     seat.split('').forEach(l => {
         switch (l) {
             case 'L':
                 size = size >> 1;
-                upper -= size;
+                pointer -= size;
                 break;
             case 'R':
                 size = size >> 1;
                 break;
         }
     });
-    return upper;
+    return pointer;
 }
 
 function decodeRow(seat) {
-    let upper = 127;
+    let pointer = 127;
     let size = 128;
     seat.split('').forEach(l => {
         switch (l) {
-            case 'L':
             case 'F':
                 size = size >> 1;
-                upper -= size;
+                pointer -= size;
                 break;
-            case 'R':
             case 'B':
                 size = size >> 1;
                 break;
         }
     });
-    return upper;
+    return pointer;
 }
