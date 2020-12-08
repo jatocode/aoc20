@@ -16,22 +16,20 @@ lines.forEach(line => {
 
 // Del 1
 var res = exec(program);
-if(res.infite) {
+if (res.infite) {
     console.log('Infinite loop, acc =', res.acc);
 }
 
 // Del 2
-// nop to jmp
-for(var i=0;i<program.length;i++) {
+for (var i = 0; i < program.length; i++) {
+    // nop to jmp
     var res = exec(change(i, program, true, false));
-    if(!res.infite) {
+    if (!res.infite) {
         console.log('ntoj Exited, acc =', res.acc);
     }
-}
-// jmp to nop
-for(var i=0;i<program.length;i++) {
-    var res = exec(change(i, program, false, true));
-    if(!res.infite) {
+    // jmp to nop
+    res = exec(change(i, program, false, true));
+    if (!res.infite) {
         console.log('jton Exited, acc =', res.acc);
     }
 }
@@ -49,29 +47,28 @@ function exec(orgprogram) {
             case 'nop': break;
             case 'acc': acc += value; break;
             case 'jmp':
-                if(program[pc + value] == undefined) {
+                if (pc + value >= program.length) {
                     // Vi försöker hoppa ut, avsluta
-                    return {acc:acc, infite: false};
+                    return { acc: acc, infite: false };
                 }
                 if (program[pc + value].exec == true) {
                     loop = true;
-                } else {
-                    pc += value;
                 }
+                pc += value;
                 continue;
             default: break;
         }
         pc++;
     }
-    return {acc:acc, infite: loop}
+    return { acc: acc, infite: loop }
 }
 
 function change(pc, orgprogram, noptojmp, jmptonop) {
     let program = JSON.parse(JSON.stringify(orgprogram));
-    if(noptojmp && program[pc].inst == 'nop') {
+    if (noptojmp && program[pc].inst == 'nop') {
         program[pc].inst = 'jmp';
-    } 
-    if(jmptonop && program[pc].inst == 'jmp') {
+    }
+    if (jmptonop && program[pc].inst == 'jmp') {
         program[pc].inst = 'nop';
     }
 
