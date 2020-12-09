@@ -41,7 +41,7 @@ function rangesum(data, num) {
     while (i < data.length && !isFound) {
         line = data[i];
         if (line.length > 0) {
-            for (var j = 0; j < data.length; j++) {
+            for (var j = 0; j < i; j++) {
                 range = lines.slice(j, i).map(x => parseInt(x));
                 let sum = range.reduce((a, b) => a + b, 0);
                 if (sum == num) {
