@@ -27,6 +27,8 @@ function findsteps(sorted) {
     return onestep * threestep;
 }
 
+// Hjälpte mig fatta
+// https://www.geeksforgeeks.org/dynamic-programming/
 function findpaths(data) {
     let chains = data.map(x => 0);
     chains[0] = 1;
@@ -37,6 +39,5 @@ function findpaths(data) {
             }
         }
     }
-    console.table(chains);
     return chains[data.length - 1];
 }
