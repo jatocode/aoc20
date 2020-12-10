@@ -8,7 +8,6 @@ data.push(data[data.length - 1] + 3);
 
 // Del 1
 console.log(findsteps(data));
-console.table(data);
 // Del 2
 console.log(findpaths(data));
 
