@@ -29,14 +29,30 @@ function findsteps(sorted) {
 // Hjälpte mig fatta
 // https://www.geeksforgeeks.org/dynamic-programming/
 function findpaths(data) {
-    let chains = data.map(x => 0);
-    chains[0] = 1;
+    let chaincount = data.map(x => 0);
+    chaincount[0] = 1;
+    let chains = [];
     for (var i = 0; i < data.length; i++) {
         for (var j = 0; j < i; j++) {
             if (data[i] - data[j] <= 3) {
-                chains[i] += chains[j];
+                chaincount[i] += chaincount[j];
+                
+                if(chains[data[i]] == undefined) chains[data[i]] = [];
+                chains[data[i]].push(data[j]);
             }
         }
     }
-    return chains[data.length - 1];
+    graphvizprint(chains);
+    return chaincount[data.length - 1];
+}
+
+// Jag behövde det här för att fatta
+function graphvizprint(data) {
+    console.log('digraph G {');
+    Object.keys(data).forEach(d => {
+        data[d].forEach(to => {
+            console.log(to + '->' + d + ';');
+        });
+    })
+    console.log('}');
 }
