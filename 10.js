@@ -28,7 +28,8 @@ function findsteps(sorted) {
 }
 
 function findpaths(data) {
-    let chains = data.map((x, i) => (i == 0 ? 1 : 0));
+    let chains = data.map(x => 0);
+    chains[0] = 1;
     for (var i = 0; i < data.length; i++) {
         for (var j = 0; j < i; j++) {
             if (data[i] - data[j] <= 3) {
