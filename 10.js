@@ -36,7 +36,7 @@ function findpaths(data) {
         for (var j = 0; j < i; j++) {
             if (data[i] - data[j] <= 3) {
                 chaincount[i] += chaincount[j];
-                
+
                 if(chains[data[i]] == undefined) chains[data[i]] = [];
                 chains[data[i]].push(data[j]);
             }
@@ -49,6 +49,7 @@ function findpaths(data) {
 // Jag behövde det här för att fatta
 function graphvizprint(data) {
     console.log('digraph G {');
+    console.log('rankdir="LR"');
     Object.keys(data).forEach(d => {
         data[d].forEach(to => {
             console.log(to + '->' + d + ';');
