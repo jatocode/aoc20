@@ -1,5 +1,4 @@
 // Testar med ett eget utilbibliotek
-const { dirxml } = require('console');
 const util = require('./util.js');
 
 let data = util.getInputTrim();
