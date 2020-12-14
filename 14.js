@@ -4,31 +4,36 @@ const util = require('./util.js');
 let data = util.getInputTrim();
 let bitmask = '';
 
-let mem = [];
-data.forEach(line => {
-    if(line.startsWith('mask')) {
-        bitmask = line.match(/.* = (.*)/)[1];
-    } else {
-        let parse = line.match(/mem\[(\d+)\] = (\d+).*/);
-        let addr = parse[1];
-        let pvalue = parse[2];
-        let binval = dec2bin(parseInt(pvalue));
-        let value = pad(binval, 36);
-
-        if(mem[addr] == undefined) mem[addr] = pad(0, 36);
-        mem[addr] = applymask(bitmask, value);       
-    }
-})
+let mem = decoderchip(data);
 
 // Del 1. Räkna summan
-console.log(mem.reduce( (summa,value) => summa + calc(value) ,0));
+console.log(mem.reduce((summa, value) => summa + calc(value), 0));
+
+function decoderchip(data) {
+    let mem = [];
+    data.forEach(line => {
+        if (line.startsWith('mask')) {
+            bitmask = line.match(/.* = (.*)/)[1];
+        } else {
+            let parse = line.match(/mem\[(\d+)\] = (\d+).*/);
+            let addr = parse[1];
+            let pvalue = parse[2];
+            let binval = dec2bin(parseInt(pvalue));
+            let value = pad(binval, 36);
+
+            if (mem[addr] == undefined) mem[addr] = pad(0, 36);
+            mem[addr] = applymask(bitmask, value);
+        }
+    })
+    return mem;
+}
 
 function applymask(mask, value) {
     let size = 36;
     let zeropad = pad(value, 36);
     result = '';
     for (var i = 0; i < size; i++) {
-         switch (mask[i]) {
+        switch (mask[i]) {
             case '0':
                 result += '0';
                 break;
