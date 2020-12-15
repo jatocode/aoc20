@@ -13,7 +13,7 @@ const max = 30000000;
 for (var turn = 0; turn < max; turn++) {
     if (turn < numbers.length) {
         last = numbers[turn];
-        lastspoken.set(last, { turn: turn + 1 });
+        lastspoken.set(last, { turn: turn });
     } else {
         let latest = lastspoken.get(last);
         if (latest == undefined || latest.turnprev == undefined) {
@@ -22,7 +22,7 @@ for (var turn = 0; turn < max; turn++) {
             if (speak == undefined) {
                 lastspoken.set(0, { turn: 0, turnprev: undefined });
             } else {
-                lastspoken.set(0, { turn: turn + 1, turnprev: speak.turn });
+                lastspoken.set(0, { turn: turn , turnprev: speak.turn });
             }
         } else {
             last = latest.turn - latest.turnprev;
@@ -31,7 +31,7 @@ for (var turn = 0; turn < max; turn++) {
             if (speak != undefined) {
                 turnprev = speak.turn;
             }
-            lastspoken.set(last, { turn: turn + 1, turnprev: turnprev });
+            lastspoken.set(last, { turn: turn , turnprev: turnprev });
         }
     }
 }
