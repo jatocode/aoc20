@@ -15,15 +15,23 @@ for (var turn = 0; turn < max; turn++) {
         last = numbers[turn];
         lastspoken.set(last, { turn: turn + 1 });
     } else {
-        if (lastspoken.get(last) == undefined || lastspoken.get(last).turnprev == undefined) {
+        let latest = lastspoken.get(last);
+        if (latest == undefined || latest.turnprev == undefined) {
             last = 0;
-            if(lastspoken.get(0) == undefined) lastspoken.set(0, {turn:0} );
-            lastspoken.set(0, { turn: turn + 1, turnprev: lastspoken.get(0).turn } );
+            let speak = lastspoken.get(last);
+            if (speak == undefined) {
+                lastspoken.set(0, { turn: 0, turnprev: undefined });
+            } else {
+                lastspoken.set(0, { turn: turn + 1, turnprev: speak.turn });
+            }
         } else {
-            let lastsp = lastspoken.get(last);
-            last = lastsp.turn - lastsp.turnprev;
-            if (lastspoken.get(last) == undefined) lastspoken.set(last, {});
-            lastspoken.set(last, { turn: turn + 1, turnprev: lastspoken.get(last).turn} );
+            last = latest.turn - latest.turnprev;
+            let speak = lastspoken.get(last);
+            let turnprev = undefined;
+            if (speak != undefined) {
+                turnprev = speak.turn;
+            }
+            lastspoken.set(last, { turn: turn + 1, turnprev: turnprev });
         }
     }
 }
