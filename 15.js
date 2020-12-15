@@ -8,8 +8,9 @@ let numbers = input;
 
 let lastspoken = [];
 let last = 0;
-const max = 2020;
+const max = 30000000;
 for (var turn = 0; turn < max; turn++) {
+    //if(turn % 100000 == 0) console.log(turn);
     if (turn < numbers.length) {
         last = numbers[turn];
         lastspoken[last] = { turn: turn + 1, count: 1 };
