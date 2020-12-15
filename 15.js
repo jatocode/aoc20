@@ -9,27 +9,20 @@ let numbers = input;
 let lastspoken = [];
 let last = 0;
 const max = 30000000;
+//const max = 2020;
 for (var turn = 0; turn < max; turn++) {
-    //if(turn % 100000 == 0) console.log(turn);
     if (turn < numbers.length) {
         last = numbers[turn];
-        lastspoken[last] = { turn: turn + 1, count: 1 };
+        lastspoken[last] = { turn: turn + 1 };
     } else {
-        if (lastspoken[last] == undefined || lastspoken[last].count == 1) {
+        if (lastspoken[last] == undefined || lastspoken[last].turnprev == undefined) {
             last = 0;
-            if(lastspoken[0] == undefined) lastspoken[0] = {turn:0, count:0};
-            let count = lastspoken[0].count == undefined ? 0 : lastspoken[0].count + 1;
-            let turnprev = lastspoken[0].turn;
-            lastspoken[0] = { turn: turn + 1, turnprev: turnprev, count: count };
+            if(lastspoken[0] == undefined) lastspoken[0] = {turn:0};
+            lastspoken[0] = { turn: turn + 1, turnprev: lastspoken[0].turn };
         } else {
             last = lastspoken[last].turn - lastspoken[last].turnprev;
-            if (lastspoken[last] == undefined) {
-                lastspoken[last] = { turn: turn + 1, count: 1 };
-            } else {
-                lastspoken[last].turnprev = lastspoken[last].turn;
-                lastspoken[last].turn = turn + 1;
-                lastspoken[last].count = lastspoken[last].count + 1;
-            }
+            if (lastspoken[last] == undefined) lastspoken[last] = {};
+            lastspoken[last] = { turn: turn + 1, turnprev: lastspoken[last].turn};
         }
     }
 }
