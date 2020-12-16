@@ -14,7 +14,7 @@ for (var i = 0; i < yt - 1; i++) {
     if (parse != null) {
         let ranges = [parse[2].split('-'), parse[3].split('-')];
         ticketrules.set(parse[1], ranges);
-        fieldorder.set(field, { name: parse[1], used: false });
+        fieldorder.set(field, parse[1]);
         field++;
     }
 }
@@ -30,7 +30,7 @@ for (var i = nearbyi; i < data.length; i++) {
     let nearby = data[i].split(',').map(x => parseInt(x));
     let validticket = true;
     nearby.forEach((field, i) => {
-        let rule = ticketrules.get(fieldorder.get(i).name);
+        let rule = ticketrules.get(fieldorder.get(i));
         //console.log(field, rule, checkvalid(field, rule));
         // if(!checkvalid(field, rule)) {
         //     console.log(field);
@@ -49,29 +49,26 @@ console.table(validtickets);
 console.log('Scanning error rate', scanningerror);
 
 // Del 2
-let c = 0;
 for (field = 0; field < validtickets[0].length; field++) {
-    for (var i = 0; i < fieldorder.size && fieldorder.get(i).used == false; i++) {
+    for (var i = 0; i < fieldorder.size; i++) {
         valid = true;
+        if(fieldorder.size == 1) {
+            console.log(field, ' = ', fieldorder.get([...fieldorder.keys()][0]));
+            break;
+        }
         for (var r = 0; r < validtickets.length && valid; r++) {
-            //for (let field = 0; field < validtickets[0].length; field++) {
             let check = validtickets[r][field];
-            //console.log(field, check);
-            let rule = ticketrules.get(fieldorder.get(i).name);
+            let rule = ticketrules.get(fieldorder.get(i));
+            //console.log(rule);
             valid = checkvalid(check, rule);
-            c = i;
-            console.log(check, fieldorder.get(i), rule, c, valid);
+            //console.log(check, fieldorder.get(i), rule, valid);
         }
         if (valid) {
-            let f = fieldorder.get(i);
-            f.used = i;
-            fieldorder.set(i, f);
+            console.log(field, ' = ', fieldorder.get(i));
+            fieldorder.delete(i);
         }
-        //}
     }
-    if (valid) console.log('Field', field, ' candidate:', fieldorder.get(c));
 }
-console.table(fieldorder);
 
 function checkvalid(value, rule) {
     return (value >= rule[0][0] && value <= rule[0][1]) ||
